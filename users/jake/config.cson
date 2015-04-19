@@ -1,0 +1,42 @@
+"*":
+  "exception-reporting":
+    userId: "7db1a6ec-a405-2599-176a-3dd03a5ca042"
+  "release-notes":
+    viewedVersion: "0.94.0"
+  welcome:
+    showOnStartup: false
+  metrics:
+    userId: "a616b4734899f13b7fbceaeffd6cdb91b09693d4"
+  editor:
+    fontSize: 18
+    softWrap: true
+    invisibles: {}
+  core:
+    disabledPackages: [
+      "cute-cursor"
+    ]
+  autosave:
+    enabled: true
+  "coffee-compile":
+    grammars: [
+      "source.coffee"
+      "source.litcoffee"
+      "source.cjsx"
+    ]
+    compileOnSave: true
+  "circle-ci":
+    apiToken: "176beddf010ffb6ab03d92fc0c48dfa702be5724"
+  "autoclose-html": {}
+  react: {}
+  "block-cursor":
+    primaryColor:
+      red: 255
+      green: 51
+      blue: 172
+      alpha: 1
+    secondaryColor:
+      red: 122
+      green: 39
+      blue: 118
+      alpha: 1
+    pulseDuration: 200

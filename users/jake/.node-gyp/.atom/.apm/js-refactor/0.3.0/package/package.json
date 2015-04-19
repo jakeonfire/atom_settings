@@ -1,0 +1,29 @@
+{
+  "name": "js-refactor",
+  "main": "./lib/js_refactor",
+  "version": "0.3.0",
+  "description": "Refactoring support for JavaScript",
+  "repository": "https://github.com/minodisk/js-refactor",
+  "license": "MIT",
+  "auther": {
+    "name": "Daisuke Mino",
+    "url": "http://dsk.mn"
+  },
+  "engines": {
+    "atom": ">0.50.0",
+    "refactor": "*"
+  },
+  "scripts": {
+    "test": "apm test"
+  },
+  "dependencies": {
+    "escope": "^1.0.1",
+    "esprima": "^1.2.2",
+    "estraverse": "^1.5.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-este-watch": "~0.1.15",
+    "grunt-notify": "^0.3.0"
+  }
+}

@@ -1,0 +1,16 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+'context-menu':
+  '.overlayer':
+      'Enable smart-cutcopypaste': 'smart-cutcopypaste:toggle'
+
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'smart-cutcopypaste'
+      'submenu': [
+        { 'label': 'Toggle', 'command': 'smart-cutcopypaste:toggle' }
+      ]
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if [[ $# != 1 ]]; then
+  echo "usage: bin/switch_to user_name"
+  echo "see README.md"
+  exit 0
+fi
+
+ATOM_DIR="$HOME/.atom"
+USER_DIR="$( cd "$( dirname ${BASH_SOURCE[0]} )/../users" && pwd )/$1"
+
+if [[ ! -d "$USER_DIR" ]]; then
+  echo $USER_DIR does not exist
+  exit 0
+fi
+
+cat > "$USER_DIR/.gitignore" <<TXT
+compile-cache/
+storage/
+TXT
+
+if [[ $(stat -qf %Y $ATOM_DIR) == $USER_DIR ]]; then
+  echo already linked
+  exit 0
+fi
+
+exec() {
+  cmd=${@:1}
+  echo $cmd
+  ($cmd)
+}
+
+if [[ -d "$ATOM_DIR" ]] && [[ ! -L "$ATOM_DIR" ]]; then
+  exec mv -f "$ATOM_DIR" "$ATOM_DIR.bak"
+fi
+exec ln -sf "$USER_DIR" "$ATOM_DIR"
+
+echo done.

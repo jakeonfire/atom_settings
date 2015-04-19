@@ -1,0 +1,6 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+'context-menu':
+  '.overlayer':
+    'Copy': 'core:copy'
+    'Cut': 'core:cut'
+    'Paste': 'core:paste'

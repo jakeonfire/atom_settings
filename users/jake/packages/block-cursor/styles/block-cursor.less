@@ -1,0 +1,39 @@
+atom-text-editor::shadow .cursors {
+  .cursor {
+    opacity: 1!important;
+    color: none;
+    transition-property: background-color, border-color;
+  }
+
+  &.blink-off .cursor {
+    opacity: 1!important;
+  }
+
+  .block-cursor-block & .cursor {
+    border: none!important;
+    z-index: -1;
+  }
+
+  .block-cursor-bordered-box & .cursor {
+    background-color: transparent!important;
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  .block-cursor-i-beam & .cursor {
+    background-color: transparent!important;
+    border-left-width: 1px;
+    border-left-style: solid;
+  }
+
+  .block-cursor-underline & .cursor {
+    background-color: transparent!important;
+    border-left: none!important;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+}
+
+atom-text-editor[mini]:not(.is-focused)::shadow .cursors .cursor {
+  display: none;
+}

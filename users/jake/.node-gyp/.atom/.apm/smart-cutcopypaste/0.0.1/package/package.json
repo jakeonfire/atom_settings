@@ -1,0 +1,17 @@
+{
+  "name": "smart-cutcopypaste",
+  "main": "./lib/smart-cutcopypaste",
+  "version": "0.0.1",
+  "description": "A short description of your package",
+  "activationEvents": [
+    "smart-cutcopypaste:smart_copy",
+    "smart-cutcopypaste:smart_cut",
+    "smart-cutcopypaste:smart_paste"
+  ],
+  "repository": "https://github.com/TimSullivan/smart-cutcopypaste",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {}
+}

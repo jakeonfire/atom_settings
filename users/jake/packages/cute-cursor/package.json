@@ -1,0 +1,28 @@
+{
+  "name": "cute-cursor",
+  "main": "./lib/cute-cursor",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Cute Cursor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/negipo/cute-cursor"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "atom": "*"
+  },
+  "readme": "# Cute Cursor\n![](http://gifzo.net/wOO1PnnQNa.gif)\n\nThe original idea is by hitode909 [cute-cursor.el](https://gist.github.com/hitode909/339782).\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/negipo/cute-cursor/issues"
+  },
+  "homepage": "https://github.com/negipo/cute-cursor",
+  "_id": "cute-cursor@0.3.0",
+  "dist": {
+    "shasum": "7ef397cb242470b6e4686087c08d6b8f1b962271"
+  },
+  "_resolved": "/private/var/folders/_3/trgxmzrx47l0f3_g_9l9vltm0000gn/T/d-114931-89033-1t3tvps/package.tgz",
+  "_from": "/private/var/folders/_3/trgxmzrx47l0f3_g_9l9vltm0000gn/T/d-114931-89033-1t3tvps/package.tgz"
+}
