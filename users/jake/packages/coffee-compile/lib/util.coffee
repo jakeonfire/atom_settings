@@ -1,6 +1,7 @@
 coffee = require 'coffee-script'
-fs     = require 'fs'
-path   = require 'path'
+fsUtil = require './fs-util'
+
+cjsx_transform = null
 
 module.exports =
   ###
@@ -16,13 +17,18 @@ module.exports =
 
   ###
   @name compile
-  @param {Editor} editor
   @param {String} code
+  @param {Boolean} literate (default false)
   @returns {String} Compiled code
   ###
   compile: (code, literate = false) ->
     bare  = atom.config.get('coffee-compile.noTopLevelFunctionWrapper')
     bare ?= true
+
+    if atom.config.get('coffee-compile.compileCjsx')
+      unless cjsx_transform
+        cjsx_transform = require 'coffee-react-transform'
+      code = cjsx_transform(code)
 
     return coffee.compile code, {bare, literate}
 
@@ -48,7 +54,6 @@ module.exports =
   ###
   isLiterate: (editor) ->
     grammarScopeName = editor.getGrammar().scopeName
-
     return grammarScopeName is "source.litcoffee"
 
   ###
@@ -61,11 +66,13 @@ module.exports =
       literate = @isLiterate editor
       text     = @compile editor.getText(), literate
       srcPath  = editor.getPath()
-      srcExt   = path.extname srcPath
-      destPath = path.join(
-        path.dirname(srcPath), "#{path.basename(srcPath, srcExt)}.js"
-      )
-      fs.writeFile destPath, text, callback
+      destPath = fsUtil.resolvePath editor.getPath()
+      destPath = fsUtil.toExt destPath, 'js'
+      fsUtil.writeFile destPath, text, callback
 
     catch e
       console.error "Coffee-compile: #{e.stack}"
+
+  checkGrammar: (editor) ->
+    grammars = atom.config.get('coffee-compile.grammars') or []
+    return editor.getGrammar().scopeName in grammars

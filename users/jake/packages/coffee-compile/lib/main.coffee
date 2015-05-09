@@ -1,8 +1,8 @@
 url         = require 'url'
 querystring = require 'querystring'
 
-CoffeeCompileView = require './coffee-compile-view'
-util              = require './util'
+CoffeeCompileEditor = require './coffee-compile-editor'
+util                = require './util'
 
 module.exports =
   config:
@@ -26,12 +26,33 @@ module.exports =
     focusEditorAfterCompile:
       type: 'boolean'
       default: false
+    compileCjsx:
+      type: 'boolean'
+      default: false
+      description: 'Provides support for an equivalent of JSX syntax in Coffeescript'
+      title: 'Compile CJSX'
+    destination:
+      type: 'string'
+      default: '.'
+      title: 'Destination filepath'
+      description: 'Relative to project root'
+    flatten:
+      type: 'boolean'
+      default: false
+      description: 'Remove all path parts'
 
   activate: ->
+    saveDisposable = null
+
     atom.commands.add 'atom-workspace', 'coffee-compile:compile': => @display()
 
-    if atom.config.get('coffee-compile.compileOnSaveWithoutPreview')
-      atom.commands.add 'atom-workspace', 'core:save': => @save()
+    atom.config.observe 'coffee-compile.compileOnSaveWithoutPreview', (value) =>
+      if not value and saveDisposable?
+        saveDisposable.dispose()
+        saveDisposable = null
+
+      else if value
+        saveDisposable = atom.commands.add 'atom-workspace', 'core:save': => @save()
 
     atom.workspace.addOpener (uriToOpen) ->
       {protocol, pathname} = url.parse uriToOpen
@@ -39,21 +60,18 @@ module.exports =
 
       return unless protocol is 'coffeecompile:'
 
-      new CoffeeCompileView
-        sourceEditorId: pathname.substr(1)
+      sourceEditorId = pathname.substr(1)
+      sourceEditor   = util.getTextEditorById sourceEditorId
 
-  checkGrammar: (editor) ->
-    grammars = atom.config.get('coffee-compile.grammars') or []
-    return (grammar = editor.getGrammar().scopeName) in grammars
+      return unless sourceEditor?
+
+      return new CoffeeCompileEditor {sourceEditor}
 
   save: ->
     editor = atom.workspace.getActiveTextEditor()
 
-    return unless editor?
-
-    return unless @checkGrammar editor
-
-    util.compileToFile editor
+    if editor? and util.checkGrammar(editor)
+      util.compileToFile editor
 
   display: ->
     editor     = atom.workspace.getActiveTextEditor()
@@ -61,21 +79,12 @@ module.exports =
 
     return unless editor?
 
-    unless @checkGrammar editor
+    unless util.checkGrammar editor
       return console.warn("Cannot compile non-Coffeescript to Javascript")
 
     atom.workspace.open "coffeecompile://editor/#{editor.id}",
       searchAllPanes: true
       split: "right"
-    .then (view) ->
-      uriToOpen = view.getURI()
-
-      return unless uriToOpen
-
-      {protocol, pathname} = url.parse uriToOpen
-      pathname = querystring.unescape(pathname) if pathname
-
-      return unless protocol is 'coffeecompile:'
-
+    .then ->
       if atom.config.get('coffee-compile.focusEditorAfterCompile')
         activePane.activate()
