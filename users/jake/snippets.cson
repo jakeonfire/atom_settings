@@ -46,3 +46,11 @@
   'puts var with label':
     'prefix': 'pv'
     'body': 'puts "$1: #{$2.inspect}"'
+
+  'logs var with label using Rails.logger':
+    'prefix': 'logv'
+    'body': 'Rails.logger.info "$1: #{$2.inspect}"'
+
+  'enters a line of =\'s using Rails.logger':
+    'prefix': 'log='
+    'body': 'Rails.logger.info "="*80'

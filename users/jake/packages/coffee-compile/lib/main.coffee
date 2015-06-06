@@ -3,17 +3,11 @@ querystring = require 'querystring'
 
 CoffeeCompileEditor = require './coffee-compile-editor'
 util                = require './util'
+pluginManager       = require './plugin-manager'
+coffeeProvider      = require './coffee-provider'
 
 module.exports =
   config:
-    grammars:
-      type: 'array'
-      default: [
-        'source.coffee'
-        'source.litcoffee'
-        'text.plain'
-        'text.plain.null-grammar'
-      ]
     noTopLevelFunctionWrapper:
       type: 'boolean'
       default: true
@@ -42,17 +36,23 @@ module.exports =
       description: 'Remove all path parts'
 
   activate: ->
-    saveDisposable = null
+    saveDisposables = []
 
     atom.commands.add 'atom-workspace', 'coffee-compile:compile': => @display()
 
     atom.config.observe 'coffee-compile.compileOnSaveWithoutPreview', (value) =>
-      if not value and saveDisposable?
-        saveDisposable.dispose()
-        saveDisposable = null
+      if not value and saveDisposables.length > 0
+        sd.dispose() for sd in saveDisposables
+        saveDisposables = []
 
       else if value
-        saveDisposable = atom.commands.add 'atom-workspace', 'core:save': => @save()
+        saveDisposables = []
+        saveDisposables.push atom.workspace.observeTextEditors (editor) =>
+          saveDisposables.push editor.onDidSave =>
+            @save(editor)
+
+    # NOTE: Remove once coffeescript provider is moved to a new package
+    @registerProviders coffeeProvider
 
     atom.workspace.addOpener (uriToOpen) ->
       {protocol, pathname} = url.parse uriToOpen
@@ -67,10 +67,8 @@ module.exports =
 
       return new CoffeeCompileEditor {sourceEditor}
 
-  save: ->
-    editor = atom.workspace.getActiveTextEditor()
-
-    if editor? and util.checkGrammar(editor)
+  save: (editor)->
+    if pluginManager.isEditorLanguageSupported(editor)
       util.compileToFile editor
 
   display: ->
@@ -79,12 +77,17 @@ module.exports =
 
     return unless editor?
 
-    unless util.checkGrammar editor
-      return console.warn("Cannot compile non-Coffeescript to Javascript")
+    unless pluginManager.isEditorLanguageSupported editor
+      return console.warn("Coffee compile: Invalid language")
 
     atom.workspace.open "coffeecompile://editor/#{editor.id}",
       searchAllPanes: true
       split: "right"
-    .then ->
+    .then (editor) ->
+      editor.renderCompiled()
+
       if atom.config.get('coffee-compile.focusEditorAfterCompile')
         activePane.activate()
+
+  registerProviders: (provider) ->
+    pluginManager.register provider

@@ -10,10 +10,14 @@
   editor:
     fontSize: 18
     softWrap: true
-    invisibles: {}
+    invisibles:
+      {}
   core:
     disabledPackages: [
       "cute-cursor"
+      "refactor"
+      "coffee-refactor"
+      "js-refactor"
     ]
   autosave:
     enabled: true
@@ -26,8 +30,10 @@
     compileOnSave: true
   "circle-ci":
     apiToken: "176beddf010ffb6ab03d92fc0c48dfa702be5724"
-  "autoclose-html": {}
-  react: {}
+  "autoclose-html":
+    {}
+  react:
+    {}
   "block-cursor":
     primaryColor:
       red: 255
@@ -40,3 +46,5 @@
       blue: 118
       alpha: 1
     pulseDuration: 200
+  "autocomplete-ruby":
+    {}
