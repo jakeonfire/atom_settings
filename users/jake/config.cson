@@ -44,3 +44,6 @@
       alpha: 1
     pulseDuration: 200
   "autocomplete-ruby": {}
+  minimap:
+    plugins:
+      "git-diff": true
