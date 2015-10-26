@@ -1,5 +1,5 @@
 pluginManager = require '../lib/plugin-manager'
-coffeeProvider = require '../lib/coffee-provider'
+coffeeProvider = require '../lib/providers/coffee-provider'
 {Disposable} = require 'atom'
 
 describe "pluginManager", ->
@@ -7,10 +7,6 @@ describe "pluginManager", ->
     # Reset plugin manager for every test
     pluginManager.plugins.length = 0
     pluginManager.languages = {}
-
-  afterEach ->
-    # HACK: to make sure other tests work properly
-    pluginManager.register coffeeProvider
 
   describe "register", ->
     it "should register successfully and return a Disposable", ->

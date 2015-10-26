@@ -1,6 +1,6 @@
 {
   "name": "react",
-  "version": "0.12.0",
+  "version": "0.12.6",
   "description": "React.js (JSX) language support, indentation, snippets, auto completion, reformatting",
   "repository": {
     "type": "git",
@@ -23,10 +23,10 @@
   "bugs": {
     "url": "https://github.com/orktes/atom-react/issues"
   },
-  "_id": "react@0.12.0",
-  "_shasum": "53fdf228c92e6fcb5f06acf3cd0c04c7ae0c6f2e",
-  "_resolved": "file:../d-11556-10925-1cdxrlv/package.tgz",
-  "_from": "../d-11556-10925-1cdxrlv/package.tgz",
+  "_id": "react@0.12.6",
+  "_shasum": "a3481dd8dc830ec18b1c9cbf4db0e6cabe7fab98",
+  "_resolved": "file:../d-115631-6689-19nbvhl/package.tgz",
+  "_from": "../d-115631-6689-19nbvhl/package.tgz",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [

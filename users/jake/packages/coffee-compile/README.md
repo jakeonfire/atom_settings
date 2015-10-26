@@ -5,13 +5,21 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Linux/Windows: `ctrl-alt-c`
 
 ## Options
-- Compile on save (default: false)
-- Compile on save without preview pane (default: false)
-- Destination filepath (default: '.')
-- Flatten (default: false)
-- No top level function wrapper (default: true)
-- Focus editor after compile (default: false)
-- Compile CJSX (default: false)
+- `Enable project based configuration` (default: false)
+- `Compile on save` (default: false)
+- `Compile on save without preview pane` (default: false)
+- `Destination filepath` (default: '.')
+- `Flatten` (default: false)
+- `cwd` - All sources are relative to this path (default: '.')
+- `Source(s)` - Source folders to compile, relative to cwd (default: '.')
+- `No top level function wrapper` (default: true)
+- `Focus editor after compile` (default: false)
+- `Compile CJSX` (default: false)
+
+### Project based configuration
+Add `coffee-compile.cson` to the project root
+
+See [wiki](https://github.com/adrianlee44/atom-coffee-compile/wiki/Project-based-configuration) for more details
 
 ![](https://raw.github.com/adrianlee44/atom-coffee-compile/master/screenshot.png)
 
@@ -20,7 +28,4 @@ Preview, compile and/or save CoffeeScript in editor to Javascript
 - Add sourcemap support
 
 ## Changelog
-- 2015-05-25   v0.16.0   Made `Compile on save without preview` option work with autosave
-- 2015-05-13   v0.15.0   Fixed subsequent compilations not updating same tab
-
-Check [changelog](https://github.com/adrianlee44/atom-coffee-compile/blob/master/CHANGELOG.md) for more information
+See [changelog](https://github.com/adrianlee44/atom-coffee-compile/blob/master/CHANGELOG.md) for more information

@@ -11,12 +11,14 @@
     fontSize: 18
     softWrap: true
     invisibles: {}
+    showInvisibles: true
   core:
     disabledPackages: [
       "cute-cursor"
       "refactor"
       "coffee-refactor"
       "js-refactor"
+      "block-cursor"
     ]
   autosave:
     enabled: true
