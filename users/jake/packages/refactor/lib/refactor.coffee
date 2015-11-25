@@ -1,6 +1,7 @@
 Watcher = require './watcher'
 ModuleManager = require './module_manager'
 { packages: packageManager } = atom
+d = (require 'debug') 'refactor'
 
 module.exports =
 new class Main
@@ -8,9 +9,13 @@ new class Main
   renameCommand: 'refactor:rename'
   doneCommand: 'refactor:done'
 
-  configDefaults:
-    highlightError    : true
-    highlightReference: true
+  config:
+    highlightError:
+      type: 'boolean'
+      default: true
+    highlightReference:
+      type: 'boolean'
+      default: true
 
 
   ###
@@ -18,6 +23,7 @@ new class Main
   ###
 
   activate: (state) ->
+    d 'activate'
     @moduleManager = new ModuleManager
     @watchers = []
 
@@ -55,6 +61,7 @@ new class Main
     isExecuted = false
     for watcher in @watchers
       isExecuted or= watcher.rename()
+    d 'rename', isExecuted
     return if isExecuted
     e.abortKeyBinding()
 

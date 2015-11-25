@@ -1,19 +1,25 @@
 {
   "name": "coffee-refactor",
   "main": "./lib/coffee_refactor",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "Refactoring support for CoffeeScript",
   "repository": {
     "type": "git",
-    "url": "https://github.com/minodisk/coffee-refactor"
+    "url": "git+https://github.com/ragg-/coffee-refactor.git"
   },
   "license": "MIT",
   "auther": {
     "name": "Daisuke Mino",
     "url": "http://dsk.mn"
   },
+  "contributors": [
+    {
+      "name": "Ragg",
+      "url": "https://github.com/Ragg-"
+    }
+  ],
   "engines": {
-    "atom": ">0.50.0",
+    "atom": ">1.0.0",
     "refactor": "*"
   },
   "scripts": {
@@ -30,13 +36,57 @@
   "readme": "# Coffee Refactor Package [![Build Status](https://travis-ci.org/minodisk/coffee-refactor.svg?branch=master)](https://travis-ci.org/minodisk/coffee-refactor)\n\nCoffeeScript refactoring language plugin for [Atom](https://atom.io/).\n**This package requires [refactor](https://atom.io/packages/refactor) package.**\nYou can install from the preference pane.\n\n## Related Packages\n\n* [refactor](https://atom.io/packages/refactor): Main package.\n* [js-refactor](https://atom.io/packages/js-refactor): Language plugin for JavaScript.\n\n## See\n\n* [Changelog](CHANGELOG.md)\n",
   "readmeFilename": "README.md",
   "bugs": {
-    "url": "https://github.com/minodisk/coffee-refactor/issues"
+    "url": "https://github.com/ragg-/coffee-refactor/issues"
   },
-  "homepage": "https://github.com/minodisk/coffee-refactor",
-  "_id": "coffee-refactor@0.6.2",
-  "dist": {
-    "shasum": "ba242d19edc4283bbf1ef06138be15f81ffbc4d3"
-  },
-  "_resolved": "/var/folders/_3/trgxmzrx47l0f3_g_9l9vltm0000gn/T/d-11482-95291-45cduu/package.tgz",
-  "_from": "/var/folders/_3/trgxmzrx47l0f3_g_9l9vltm0000gn/T/d-11482-95291-45cduu/package.tgz"
+  "homepage": "https://github.com/ragg-/coffee-refactor#readme",
+  "_id": "coffee-refactor@0.7.0",
+  "_shasum": "96a68e90e02362f2273a96b4815a691b17b49576",
+  "_resolved": "file:../d-1151025-40932-52o8x/package.tgz",
+  "_from": "../d-1151025-40932-52o8x/package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [
+      {
+        "name": "lodash",
+        "version": "2.4.2",
+        "path": "node_modules/lodash/dist/lodash.js"
+      }
+    ],
+    "extensions": {
+      ".coffee": [
+        "Gruntfile.coffee",
+        "lib/coffee_refactor.coffee",
+        "lib/location_data_util.coffee",
+        "lib/ripper.coffee"
+      ],
+      ".js": [
+        "node_modules/lodash/dist/lodash.compat.js",
+        "node_modules/lodash/dist/lodash.compat.min.js",
+        "node_modules/lodash/dist/lodash.js",
+        "node_modules/lodash/dist/lodash.min.js",
+        "node_modules/lodash/dist/lodash.underscore.js",
+        "node_modules/lodash/dist/lodash.underscore.min.js",
+        "node_modules/lodash/lodash.js"
+      ],
+      ".json": [
+        "node_modules/lodash/package.json",
+        "package.json"
+      ]
+    },
+    "folders": [
+      {
+        "paths": [
+          "",
+          "lib",
+          "spec",
+          "spec/fixtures",
+          "vender/coffee-script/lib/coffee-script",
+          "vender/coffee-script"
+        ],
+        "dependencies": {
+          "lodash": "~2.4.1"
+        }
+      }
+    ]
+  }
 }

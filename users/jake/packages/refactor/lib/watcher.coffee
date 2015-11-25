@@ -1,5 +1,5 @@
 { EventEmitter2 } = require 'eventemitter2'
-{ locationDataToRange } = require './location_data_util'
+d = (require 'debug') 'watcher'
 
 module.exports =
 class Watcher extends EventEmitter2
@@ -8,12 +8,12 @@ class Watcher extends EventEmitter2
     super()
     #@editor.on 'grammar-changed', @verifyGrammar
 
-    @editor.onDidChangeCursorPosition @onCursorMoved
     @editor.onDidDestroy @onDestroyed
-    @editor.onDidChange @onBufferChanged
+    @editor.onDidStopChanging @onBufferChanged
+    @editor.onDidChangeCursorPosition @onCursorMoved
 
-    @moduleManager.on 'changed', @verifyGrammar
     @verifyGrammar()
+    @moduleManager.on 'changed', @verifyGrammar
 
   destruct: =>
     @removeAllListeners()
@@ -41,6 +41,7 @@ class Watcher extends EventEmitter2
   verifyGrammar: =>
     scopeName = @editor.getGrammar().scopeName
     module = @moduleManager.getModule scopeName
+    d 'verify grammar', scopeName, module
     return if module is @module
     @deactivate()
     return unless module?
@@ -56,7 +57,7 @@ class Watcher extends EventEmitter2
     @eventDestroyed = on
     @eventBufferChanged = on
 
-    # Execute
+    d 'activate and parse'
     @parse()
 
   deactivate: ->
@@ -91,38 +92,39 @@ class Watcher extends EventEmitter2
   ###
 
   parse: =>
+    d 'parse'
     @eventCursorMoved = off
-    @destroyReferences()
-    @destroyErrors()
     text = @editor.buffer.getText()
     if text isnt @cachedText
+      @destroyReferences()
+      @destroyErrors()
       @cachedText = text
       @ripper.parse text, @onParseEnd
     else
       @onParseEnd()
+    @eventCursorMoved = on
 
   onParseEnd: (errors) =>
     if errors?
       @createErrors errors
     else
       @createReferences()
-      @eventCursorMoved = off
-      @eventCursorMoved = on
 
   destroyErrors: ->
+    d 'destroy errors'
     return unless @errorMarkers?
     for marker in @errorMarkers
       marker.destroy()
     delete @errorMarkers
 
   createErrors: (errors) =>
-    @errorMarkers = for { location, range, message } in errors
-      if location? #TODO deprecate verification of the location in v0.5
-        range = locationDataToRange location
-
+    d 'create errors'
+    @errorMarkers = for { range, message } in errors
       marker = @editor.markBufferRange range
+      d 'marker', range, marker
       @editor.decorateMarker marker, type: 'highlight', class: 'refactor-error'
-      @editor.decorateMarker marker, type: 'gutter', class: 'refactor-error'
+      @editor.decorateMarker marker, type: 'line-number', class: 'refactor-error'
+      # TODO: show error message
       marker
 
   destroyReferences: ->
@@ -133,6 +135,7 @@ class Watcher extends EventEmitter2
 
   createReferences: ->
     ranges = @ripper.find @editor.getSelectedBufferRange().start
+    return unless ranges? and ranges.length > 0
     @referenceMarkers = for range in ranges
       marker = @editor.markBufferRange range
       @editor.decorateMarker marker, type: 'highlight', class: 'refactor-reference'
@@ -154,7 +157,7 @@ class Watcher extends EventEmitter2
     # When no reference exists, do nothing.
     cursor = @editor.getLastCursor()
     ranges = @ripper.find cursor.getBufferPosition()
-    return false if ranges.length is 0
+    return false unless ranges? and ranges.length > 0
 
     # Pause highlighting life cycle.
     @destroyReferences()
@@ -215,10 +218,9 @@ class Watcher extends EventEmitter2
     delete @renamingMarkers
 
     # Start highlighting life cycle.
+    d 'done and reparse'
     @parse()
-    @eventBufferChanged = off
     @eventBufferChanged = on
-    @eventCursorMoved = off
     @eventCursorMoved = on
 
     # Returns true not to abort keyboard binding.
@@ -231,8 +233,8 @@ class Watcher extends EventEmitter2
 
   onBufferChanged: =>
     return unless @eventBufferChanged
-    clearTimeout @bufferChangedTimeoutId
-    @bufferChangedTimeoutId = setTimeout @parse, 0
+    d 'buffer changed'
+    @parse()
 
   onCursorMoved: =>
     return unless @eventCursorMoved
@@ -240,7 +242,7 @@ class Watcher extends EventEmitter2
       @abort()
     else
       clearTimeout @cursorMovedTimeoutId
-      @cursorMovedTimeoutId = setTimeout @onCursorMovedAfter, 0
+      @cursorMovedTimeoutId = setTimeout @onCursorMovedAfter, 100
 
   onCursorMovedAfter: =>
     @destroyReferences()
